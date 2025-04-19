@@ -16,8 +16,16 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: maven
   security-check:
+    runs-on: ubuntu-latest
+    needs: compile
+    steps:
+    - uses: actions/checkout@v4
+    - name: gitleaks installation
+      run: sudo apt install gitleaks -y
+    - name: gitleaks scan
+      run: gitleaks detect source . -r gitleaks.json -f json
+  security-check-2:
     runs-on: ubuntu-latest
     needs: compile
     steps:
